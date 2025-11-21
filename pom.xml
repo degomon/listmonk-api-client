@@ -31,7 +31,7 @@
 
     <scm>
         <connection>scm:git:git://github.com/degomon/listmonk-api-client.git</connection>
-        <developerConnection>scm:git:ssh://github.com:degomon/listmonk-api-client.git</developerConnection>
+        <developerConnection>scm:git:ssh://git@github.com/degomon/listmonk-api-client.git</developerConnection>
         <url>https://github.com/degomon/listmonk-api-client/tree/main</url>
     </scm>
 

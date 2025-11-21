@@ -75,8 +75,13 @@ gpg --list-secret-keys --keyid-format=long
 gpg --armor --export-secret-keys YOUR_KEY_ID > gpg-private-key.asc
 
 # 4. Publish your public key to key servers
+# Try multiple servers as they can be unreliable
 gpg --keyserver keyserver.ubuntu.com --send-keys YOUR_KEY_ID
 gpg --keyserver keys.openpgp.org --send-keys YOUR_KEY_ID
+
+# Alternative servers if the above fail:
+# gpg --keyserver pgp.mit.edu --send-keys YOUR_KEY_ID
+# gpg --keyserver hkps://keys.openpgp.org --send-keys YOUR_KEY_ID
 ```
 
 **⚠️ IMPORTANT:** 
