@@ -126,6 +126,9 @@ gpg --list-secret-keys
 3. **Build and deploy:**
 
 ```bash
+# Export GPG_TTY for proper terminal interaction
+export GPG_TTY=$(tty)
+
 # Clean and build with signing
 mvn clean deploy -Prelease
 
@@ -140,12 +143,12 @@ mvn clean deploy -Prelease -Dgpg.passphrase=YOUR_PASSPHRASE
 - [ ] Update version in `pom.xml` (remove `-SNAPSHOT`)
 - [ ] Update `README.md` with new version number
 - [ ] Commit version changes
-- [ ] Create and push git tag: `git tag v1.0.0 && git push origin v1.0.0`
+- [ ] Create and push git tag: `git tag vX.Y.Z && git push origin vX.Y.Z`
 - [ ] Trigger GitHub Actions workflow (automatic or manual)
 - [ ] Verify artifacts appear in [Nexus Repository Manager](https://s01.oss.sonatype.org/)
 - [ ] Wait for sync to Maven Central (usually 15-30 minutes)
 - [ ] Verify artifact is available at https://search.maven.org/
-- [ ] Update version to next SNAPSHOT: `1.0.1-SNAPSHOT`
+- [ ] Update version to next SNAPSHOT: `X.Y.(Z+1)-SNAPSHOT`
 - [ ] Create GitHub Release with release notes
 
 ## Verification

@@ -47,10 +47,21 @@ jobs:
               "password": "${{ secrets.OSSRH_TOKEN }}"
             }]
       
+      - name: Validate version format
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          if ! echo "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$'; then
+            echo "Error: Invalid version format. Expected semantic versioning (e.g., 1.0.0 or 1.0.0-RC1)"
+            exit 1
+          fi
+      
       - name: Build and Deploy to Maven Central
         env:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GPG_TTY: $(tty)
         run: |
+          export GPG_TTY=$(tty)
           mvn clean deploy -Prelease -Dgpg.passphrase=$GPG_PASSPHRASE
       
       - name: Upload artifacts

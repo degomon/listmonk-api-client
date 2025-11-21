@@ -113,16 +113,16 @@ Add the following secrets to your GitHub repository:
 
 When you're ready to make your first release:
 
-1. Edit `pom.xml` and change version from `1.0.0-SNAPSHOT` to `1.0.0`
-2. Commit: `git commit -am "Release version 1.0.0"`
-3. Create tag: `git tag v1.0.0`
+1. Edit `pom.xml` and change version from `X.Y.Z-SNAPSHOT` to `X.Y.Z` (e.g., `1.0.0-SNAPSHOT` → `1.0.0`)
+2. Commit: `git commit -am "Release version X.Y.Z"`
+3. Create tag: `git tag vX.Y.Z`
 4. Push: `git push && git push --tags`
 
 ### Step 5: Publish Using GitHub Actions
 
 **Option A - Automatic on Release:**
 1. Go to https://github.com/degomon/listmonk-api-client/releases/new
-2. Choose tag: v1.0.0
+2. Choose tag: vX.Y.Z (e.g., v1.0.0)
 3. Create release notes
 4. Click "Publish release"
 5. The workflow will automatically run
@@ -130,7 +130,7 @@ When you're ready to make your first release:
 **Option B - Manual Trigger:**
 1. Go to: https://github.com/degomon/listmonk-api-client/actions/workflows/maven-publish.yml
 2. Click "Run workflow"
-3. Enter version: `1.0.0`
+3. Enter version: `X.Y.Z` (e.g., `1.0.0` - must follow semantic versioning)
 4. Click "Run workflow"
 
 ### Step 6: Verify Publication
@@ -182,7 +182,7 @@ If you encounter issues:
 
 ## 🎉 After First Successful Publish
 
-1. Update version in pom.xml to `1.0.1-SNAPSHOT`
+1. Update version in pom.xml to next SNAPSHOT (e.g., `1.0.1-SNAPSHOT`)
 2. Update README.md to remove "SNAPSHOT" from installation instructions
 3. Add a CHANGELOG.md to track versions
 4. Celebrate! 🎊 Your library is on Maven Central!
