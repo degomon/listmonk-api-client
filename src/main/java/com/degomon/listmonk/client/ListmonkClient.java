@@ -4,6 +4,7 @@ import com.degomon.listmonk.service.CampaignService;
 import com.degomon.listmonk.service.HealthService;
 import com.degomon.listmonk.service.ListService;
 import com.degomon.listmonk.service.SubscriberService;
+import com.degomon.listmonk.service.TransactionalService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -29,6 +30,7 @@ public class ListmonkClient {
     private final ListService listService;
     private final CampaignService campaignService;
     private final HealthService healthService;
+    private final TransactionalService transactionalService;
     
     private ListmonkClient(Builder builder) {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder()
@@ -76,6 +78,7 @@ public class ListmonkClient {
         this.listService = retrofit.create(ListService.class);
         this.campaignService = retrofit.create(CampaignService.class);
         this.healthService = retrofit.create(HealthService.class);
+        this.transactionalService = retrofit.create(TransactionalService.class);
     }
     
     /**
@@ -112,6 +115,15 @@ public class ListmonkClient {
      */
     public HealthService health() {
         return healthService;
+    }
+    
+    /**
+     * Get the Transactional service.
+     *
+     * @return TransactionalService instance
+     */
+    public TransactionalService transactional() {
+        return transactionalService;
     }
     
     /**

@@ -52,6 +52,7 @@ class ListmonkClientTest {
         assertNotNull(client.lists());
         assertNotNull(client.campaigns());
         assertNotNull(client.health());
+        assertNotNull(client.transactional());
     }
     
     @Test

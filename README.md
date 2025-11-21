@@ -182,6 +182,59 @@ if (response.isSuccessful()) {
 }
 ```
 
+### Send Transactional Email
+
+```java
+import com.degomon.listmonk.model.TransactionalMessage;
+import java.util.Map;
+import java.util.HashMap;
+
+// Create custom data for the template
+Map<String, Object> data = new HashMap<>();
+data.put("order_id", "ORDER-12345");
+data.put("customer_name", "John Doe");
+data.put("total_amount", 99.99);
+
+// Build and send the transactional message
+TransactionalMessage message = TransactionalMessage.builder(2L) // Template ID
+        .subscriberEmail("customer@example.com")
+        .subject("Order Confirmation")
+        .data(data)
+        .contentType("html")
+        .build();
+
+Response<ApiResponse<Boolean>> response = client.transactional()
+        .sendTransactionalMessage(message)
+        .execute();
+
+if (response.isSuccessful()) {
+    Boolean sent = response.body().getData();
+    System.out.println("Message sent: " + sent);
+}
+```
+
+### Send Transactional Email to Multiple Subscribers
+
+```java
+import java.util.Arrays;
+import java.util.List;
+
+List<String> emails = Arrays.asList(
+    "user1@example.com",
+    "user2@example.com",
+    "user3@example.com"
+);
+
+TransactionalMessage message = TransactionalMessage.builder(3L)
+        .subscriberEmails(emails)
+        .subject("Bulk Notification")
+        .build();
+
+Response<ApiResponse<Boolean>> response = client.transactional()
+        .sendTransactionalMessage(message)
+        .execute();
+```
+
 ## API Services
 
 The client provides access to the following service interfaces:
@@ -190,6 +243,7 @@ The client provides access to the following service interfaces:
 - **`client.subscribers()`** - Subscriber management (CRUD operations)
 - **`client.lists()`** - Mailing list management (CRUD operations)
 - **`client.campaigns()`** - Campaign management (CRUD operations)
+- **`client.transactional()`** - Transactional message sending (emails with templates)
 
 ## Configuration Options
 
