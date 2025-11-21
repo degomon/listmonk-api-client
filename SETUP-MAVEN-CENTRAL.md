@@ -99,9 +99,16 @@ Add the following secrets to your GitHub repository:
 | Secret Name | Value | Where to Get It |
 |------------|-------|-----------------|
 | `OSSRH_USERNAME` | Your Sonatype JIRA username | From Step 1 |
-| `OSSRH_TOKEN` | Your Sonatype JIRA password | From Step 1 (or generate token in JIRA profile) |
+| `OSSRH_TOKEN` | Your Sonatype user token | **Recommended:** Generate token in JIRA profile (Settings → User Token) instead of using password |
 | `GPG_PRIVATE_KEY` | Content of `gpg-private-key.asc` | From Step 2 (the entire file content) |
 | `GPG_PASSPHRASE` | Your GPG key passphrase | From Step 2 |
+
+**Security Note:** For `OSSRH_TOKEN`, it is strongly recommended to generate a user token from your JIRA profile instead of using your account password. To generate a token:
+1. Log in to https://s01.oss.sonatype.org/
+2. Click your username → Profile
+3. Select "User Token" from the dropdown
+4. Click "Access User Token"
+5. Use the generated token (not your password) for `OSSRH_TOKEN`
 
 **To add a secret:**
 - Click "New repository secret"
