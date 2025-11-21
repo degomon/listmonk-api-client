@@ -227,6 +227,16 @@ mvn package
 mvn install
 ```
 
+## Publishing to Maven Central
+
+This library is configured for publishing to Maven Central. For detailed instructions on how to publish a release, see [PUBLISHING.md](PUBLISHING.md).
+
+**Quick summary:**
+- Artifacts are signed with GPG (required by Maven Central)
+- Publishing can be automated via GitHub Actions
+- Requires OSSRH account and GPG keys
+- See PUBLISHING.md for complete setup instructions
+
 ## Testing
 
 The library includes comprehensive tests using JUnit 5 and MockWebServer. Run tests with:
