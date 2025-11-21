@@ -6,14 +6,24 @@ This document explains how to publish the `listmonk-api-client` library to Maven
 
 Before you can publish to Maven Central, you need to set up the following:
 
-### 1. Sonatype OSSRH Account
+### 1. Maven Central Account and Namespace
 
-1. Create a JIRA account at https://issues.sonatype.org/
-2. Create a New Project ticket for `com.degomon` groupId
-3. Follow the instructions in the ticket to verify domain ownership
-4. Wait for approval (usually takes 1-2 business days)
+**Note:** As of January 2024, Sonatype replaced the old JIRA system (issues.sonatype.org) with the new Central Portal.
 
-Reference: https://central.sonatype.org/publish/publish-guide/
+1. **Create an account** at https://central.sonatype.com
+   - Sign in with GitHub, Google, or username/password
+   - If using GitHub login, you automatically get `io.github.username` namespace verified
+
+2. **Register your namespace** (groupId):
+   - For GitHub users: `io.github.degomon` is automatically available
+   - For custom domain: Register `com.degomon` and verify via DNS TXT record or website file
+   - Verification is usually instant to a few hours
+
+3. **Generate User Token** for publishing:
+   - In Central Portal: View Account → Generate User Token
+   - Save the username and token pair for Maven deployment
+
+Reference: https://central.sonatype.org/register/central-portal/
 
 ### 2. GPG Key for Signing Artifacts
 
@@ -44,8 +54,8 @@ Configure the following secrets in your GitHub repository (Settings → Secrets 
 
 | Secret Name | Description | How to Get It |
 |------------|-------------|---------------|
-| `OSSRH_USERNAME` | Your Sonatype JIRA username | From your JIRA account |
-| `OSSRH_TOKEN` | Your Sonatype JIRA password or token | From your JIRA account or generate a token |
+| `OSSRH_USERNAME` | Central Portal user token username | Generate at https://central.sonatype.com (View Account → Generate User Token) |
+| `OSSRH_TOKEN` | Central Portal user token password | Generated together with username (same location) |
 | `GPG_PRIVATE_KEY` | Your GPG private key | Export with `gpg --armor --export-secret-keys` |
 | `GPG_PASSPHRASE` | Passphrase for your GPG key | The passphrase you set when creating the key |
 
@@ -109,12 +119,14 @@ If you prefer to publish manually from your local machine:
   <servers>
     <server>
       <id>ossrh</id>
-      <username>YOUR_OSSRH_USERNAME</username>
-      <password>YOUR_OSSRH_TOKEN</password>
+      <username>YOUR_CENTRAL_PORTAL_TOKEN_USERNAME</username>
+      <password>YOUR_CENTRAL_PORTAL_TOKEN_PASSWORD</password>
     </server>
   </servers>
 </settings>
 ```
+
+**Note:** Use the token username/password generated from Central Portal, not your login credentials.
 
 2. **Ensure GPG is configured locally:**
 
@@ -195,7 +207,10 @@ gpg --list-secret-keys
 
 **Problem:** "401 Unauthorized"
 
-**Solution:** Verify your OSSRH credentials in `~/.m2/settings.xml` or GitHub secrets.
+**Solution:** 
+- Verify you're using the User Token credentials from Central Portal, not your login credentials
+- Check that credentials in `~/.m2/settings.xml` or GitHub secrets are correct
+- Regenerate the User Token if needed at https://central.sonatype.com
 
 **Problem:** "400 Bad Request" or "Validation errors"
 
@@ -217,6 +232,8 @@ gpg --list-secret-keys
 ## Additional Resources
 
 - [Maven Central Publishing Guide](https://central.sonatype.org/publish/publish-guide/)
+- [Central Portal Registration](https://central.sonatype.org/register/central-portal/)
+- [Namespace Registration](https://central.sonatype.org/register/namespace/)
 - [Working with GPG Signatures](https://central.sonatype.org/publish/requirements/gpg/)
 - [Apache Maven Deploy Plugin](https://maven.apache.org/plugins/maven-deploy-plugin/)
 - [Nexus Staging Maven Plugin](https://github.com/sonatype/nexus-maven-plugins/tree/main/staging/maven-plugin)
@@ -224,6 +241,7 @@ gpg --list-secret-keys
 ## Support
 
 If you encounter issues:
-1. Check the [Sonatype JIRA](https://issues.sonatype.org/)
+1. Email [central-support@sonatype.com](mailto:central-support@sonatype.com) (replaced the old JIRA system)
 2. Review [Sonatype Support](https://central.sonatype.org/support/)
-3. Check GitHub Actions logs for detailed error messages
+3. Check [What Happened to issues.sonatype.org](https://central.sonatype.org/faq/what-happened-to-issues-sonatype-org/)
+4. Check GitHub Actions logs for detailed error messages

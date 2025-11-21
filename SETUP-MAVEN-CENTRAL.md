@@ -2,6 +2,8 @@
 
 This document outlines what **YOU** need to do to complete the Maven Central publishing setup.
 
+> **📢 Important Update (January 2024):** Sonatype has replaced the old JIRA-based system (issues.sonatype.org) with the new Central Portal (central.sonatype.com). The setup process is now much faster and simpler! See [What Happened to issues.sonatype.org](https://central.sonatype.org/faq/what-happened-to-issues-sonatype-org/) for details.
+
 ## ✅ What's Already Done
 
 The following has been configured in the repository:
@@ -21,28 +23,39 @@ The following has been configured in the repository:
 
 ## 🔴 What YOU Need to Do
 
-### Step 1: Create Sonatype OSSRH Account
+### Step 1: Register with Maven Central
 
 This is the account that will allow you to publish to Maven Central.
 
-1. **Create a JIRA account** at https://issues.sonatype.org/secure/Signup!default.jspa
-2. **Create a New Project ticket**:
-   - Go to https://issues.sonatype.org/secure/CreateIssue.jspa?issuetype=21&pid=10134
-   - Project: Community Support - Open Source Project Repository Hosting (OSSRH)
-   - Issue Type: New Project
-   - Summary: `Request repository for com.degomon groupId`
-   - Group Id: `com.degomon`
-   - Project URL: `https://github.com/degomon/listmonk-api-client`
-   - SCM URL: `https://github.com/degomon/listmonk-api-client.git`
-   - Username(s): Your JIRA username
-   - Description: Brief description of your project
+**Note:** As of January 2024, Sonatype has moved from the old JIRA-based system (issues.sonatype.org) to a new Central Portal.
 
-3. **Verify domain ownership**:
-   - Since you're using `com.degomon`, you'll need to verify ownership of `degomon.com` OR
-   - Use GitHub hosting: They may ask you to create a temporary GitHub repo to verify ownership
-   - Follow the instructions in the JIRA ticket
+1. **Create an account** at https://central.sonatype.com
+   - Click "Sign In" at the top right
+   - Choose to sign in with:
+     - **GitHub** (recommended - automatically verifies `io.github.username` namespace)
+     - **Google** account
+     - **Username and password** of your choice
 
-4. **Wait for approval** (typically 1-2 business days)
+2. **Register a namespace** for your groupId:
+   
+   **Option A - Using GitHub (Easiest):**
+   - If you signed up with GitHub, you automatically get `io.github.degomon` as a verified namespace
+   - No additional verification needed!
+   - Your groupId would be: `io.github.degomon`
+   
+   **Option B - Using your own domain (com.degomon):**
+   - Go to the Central Portal and add namespace `com.degomon`
+   - Verify ownership by either:
+     - **DNS TXT record:** Add a TXT record to `degomon.com` with the verification code provided
+     - **Website verification:** Add an HTML file to your website root
+   - Wait for automatic verification (usually within minutes to hours)
+
+3. **Generate user token** (for publishing):
+   - Once logged in to https://central.sonatype.com
+   - Go to "View Account" → "Generate User Token"
+   - Save both the username and token - you'll need these for GitHub Secrets
+
+**Support:** If you need help, email central-support@sonatype.com
 
 ### Step 2: Generate GPG Key
 
@@ -98,17 +111,12 @@ Add the following secrets to your GitHub repository:
 
 | Secret Name | Value | Where to Get It |
 |------------|-------|-----------------|
-| `OSSRH_USERNAME` | Your Sonatype JIRA username | From Step 1 |
-| `OSSRH_TOKEN` | Your Sonatype user token | **Recommended:** Generate token in JIRA profile (Settings → User Token) instead of using password |
+| `OSSRH_USERNAME` | Your Central Portal user token username | From Step 1 - Generate User Token |
+| `OSSRH_TOKEN` | Your Central Portal user token password | From Step 1 - Generate User Token |
 | `GPG_PRIVATE_KEY` | Content of `gpg-private-key.asc` | From Step 2 (the entire file content) |
 | `GPG_PASSPHRASE` | Your GPG key passphrase | From Step 2 |
 
-**Security Note:** For `OSSRH_TOKEN`, it is strongly recommended to generate a user token from your JIRA profile instead of using your account password. To generate a token:
-1. Log in to https://s01.oss.sonatype.org/
-2. Click your username → Profile
-3. Select "User Token" from the dropdown
-4. Click "Access User Token"
-5. Use the generated token (not your password) for `OSSRH_TOKEN`
+**Important:** The `OSSRH_USERNAME` and `OSSRH_TOKEN` are generated as a pair when you click "Generate User Token" in the Central Portal. They are NOT your login credentials - they are specifically for publishing artifacts.
 
 **To add a secret:**
 - Click "New repository secret"
@@ -196,12 +204,15 @@ If you encounter issues:
 
 ## Timeline Expectations
 
-- **OSSRH Account Approval**: 1-2 business days
+- **Central Portal Account**: Instant (sign up with GitHub/Google)
+- **Namespace Verification**: 
+  - GitHub namespace (`io.github.username`): Instant and automatic
+  - Custom domain namespace (`com.degomon`): Minutes to hours for DNS verification
 - **GPG Key Generation**: 5 minutes
 - **GitHub Secrets Setup**: 5 minutes
 - **First Publish**: 5-10 minutes (build + upload)
 - **Maven Central Sync**: 15-30 minutes
-- **Total from start to finish**: 1-3 days (mostly waiting for OSSRH approval)
+- **Total from start to finish**: 30 minutes to a few hours (much faster than the old JIRA system!)
 
 ## Security Best Practices
 
